@@ -45,7 +45,7 @@ Do NOT dump all ACs at once. Take them one by one:
 
 3. **Use the AskUserQuestion tool to check understanding:**
 
-Use AskUserQuestion with header "AC Review" and the question "What's your read on this AC?" with options:
+Output a blank line, then use AskUserQuestion with header "AC Review" and the question "What's your read on this AC?" with options:
 - **Clear — move on** (description: "This AC makes sense, no questions")
 - **I have questions** (description: "Something is unclear or I want to dig deeper")
 - **Doesn't match my understanding** (description: "I think this means something different")
@@ -76,7 +76,7 @@ Incrementally built from the walkthrough — not generated fresh at the end. Two
 - **Clear** — Requirements you both understand and agree on (built from each "move on" response)
 - **Needs Answers** — Questions that would block or significantly change implementation
 
-Present the final checklist and use AskUserQuestion with header "Next Step" and the question "Ready to move to architecture?" with options:
+Present the final checklist. Output a blank line, then use AskUserQuestion with header "Next Step" and the question "Ready to move to architecture?" with options:
 - **Plan the architecture** (description: "Requirements are clear, let's design the solution")
 - **Revisit something** (description: "I want to go back to an AC or gap we discussed")
 - **Pause here** (description: "I need to check with someone first")

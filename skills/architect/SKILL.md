@@ -32,7 +32,7 @@ Before exploring anything, establish the boundaries. Present what you already kn
 - **Deployment** — Any migration concerns, feature flags needed, backwards compatibility?
 - **Dependencies** — Other tickets, teams, or systems this touches?
 
-Offer an interactive prompt using AskUserQuestion with header "Constraints" and the question "Anything I'm missing, or should I start exploring the codebase?" with options:
+Output a blank line, then offer an interactive prompt using AskUserQuestion with header "Constraints" and the question "Anything I'm missing, or should I start exploring the codebase?" with options:
 - **Start exploring** (description: "Constraints look complete, begin codebase exploration")
 - **There's additional context** (description: "Type any missing constraints or context")
 
@@ -51,7 +51,7 @@ Launch targeted subagents to explore:
 
 "The `Order` model has a `recent` scope that filters by date. The `ItemsController#index` uses a serializer for response formatting. The frontend table uses a data-fetching hook with column definitions in a separate config file."
 
-**Walk through findings interactively.** Don't dump everything at once. Present what you found for one area, check if the developer has questions or context to add, then move to the next. Use AskUserQuestion with header "Findings" and a question like "Questions before I look at the frontend?" with options:
+**Walk through findings interactively.** Don't dump everything at once. Present what you found for one area, check if the developer has questions or context to add, then move to the next. Output a blank line, then use AskUserQuestion with header "Findings" and a question like "Questions before I look at the frontend?" with options:
 - **Makes sense — continue** (description: "Move on to the next area")
 - **I have a question** (description: "Something about these findings is unclear")
 - **You missed something** (description: "Type what else to check")
@@ -70,11 +70,17 @@ Present at least 2 approaches. For each one:
 
 **Name the tradeoffs honestly.** Every approach has downsides. If your recommended approach adds complexity, say so.
 
-After presenting approaches, use AskUserQuestion with header "Approach Decision" and the question "Which direction feels right?" with options:
+After presenting approaches, output a blank line, then use AskUserQuestion with header "Approach Decision" and the question "Which direction feels right?" with options:
 - **Go with your recommendation** (description: "I'm sold — let's proceed with your pick")
 - **I prefer the alternative** (description: "I want to go with the other approach")
 - **I have questions first** (description: "Not ready to decide yet")
 - **Neither** (description: "I'm thinking of something different — I'll explain")
+
+**If the developer picks 1 or 2 (an approach is chosen):** Output a blank line, then follow up immediately with a second AskUserQuestion with header "Before Writing the Plan" and the question "Anything to add before I write the plan?" with options:
+- **Nope — write it** (description: "Everything's captured, proceed")
+- **Yes — I have notes** (description: "Type what you'd like to add or adjust")
+
+This step exists because approach selection and adding context are separate actions — the numbered menu can't capture both at once. Always do this follow-up; don't skip it.
 
 **If the developer picks 3 (questions):** This is where learning happens. Don't just answer — help them understand the tradeoff space. "What's your concern? Is it the added complexity, or something about the data flow?" Let them reason through it, but don't turn it into a quiz.
 
@@ -95,7 +101,7 @@ Confirm the chosen approach. Summarize what was decided:
 - Anything the developer should watch out for during implementation
 - How to split into PRs if needed
 
-Use AskUserQuestion with header "Design Agreement" and the question "Does this capture our agreement?" with options:
+Output a blank line, then use AskUserQuestion with header "Design Agreement" and the question "Does this capture our agreement?" with options:
 - **Yes — write the implementation plan** (description: "Design decisions are locked, proceed to writing the plan")
 - **I want to adjust something** (description: "Type what needs to change")
 
@@ -114,7 +120,7 @@ When the developer confirms, write the plan to `.claude/plans/[TICKET-ID]-implem
 - **Order matters.** List files in implementation order. A common sequence (adjust for your stack): data layer (schema/migrations) → domain logic (models/entities) → services/use-cases → API/controller → frontend → tests.
 - **Be specific about test expectations.** Don't say "add tests." Say "Test that the scope returns only filing tasks. Test that non-filing tasks are excluded."
 
-Present the plan to the developer for review using AskUserQuestion with header "Plan Review" and the question "Anything missing or that you'd change?" with options:
+Present the plan to the developer for review. Output a blank line, then use AskUserQuestion with header "Plan Review" and the question "Anything missing or that you'd change?" with options:
 - **Looks good — I'm ready to code** (description: "Plan is complete, proceed to implementation")
 - **I want to adjust something** (description: "Type what needs to change")
 
@@ -140,6 +146,6 @@ When the developer confirms the plan:
 >
 > **Start a fresh session for implementation.** The analysis and planning filled this context with discussion you no longer need. In the new session, say "let's start coding" or "pair with me" — the **pairing-buddy** skill will pick up the plan and keep you on track.
 >
-Use AskUserQuestion with header "Session End" and the question "Ready to start a new session?" with options:
+Output a blank line, then use AskUserQuestion with header "Session End" and the question "Ready to start a new session?" with options:
 - **Yes — start fresh** (description: "Open a new session and use the pairing-buddy skill")
 - **Not yet — I have more questions** (description: "Stay here to discuss further")
