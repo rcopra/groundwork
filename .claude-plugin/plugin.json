@@ -1,6 +1,6 @@
 {
   "name": "groundwork",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Structured feature development workflow: ticket analysis, architecture planning, implementation pairing, and pre-PR review.",
   "author": {
     "name": "Rick Copra"
