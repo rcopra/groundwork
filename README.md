@@ -53,7 +53,7 @@ Also, I can sometimes have a hard time staying focused while working on tickets 
 
 ### The point
 
-It's really supposed to be all about not robbing me of my chances to grow as a dev, and letting me think about problems. It's not a productivity multiplier kind of skill, but more one that promotes critical thinking and not pressing the "get work done" button (which can often lead to longer turnaround time as I may not have thought the problem through very well).
+It's really supposed to be all about not robbing me of my chances to grow as a dev, and letting me think about problems. It's not a skill designed to be a productivity multiplier, but more one that promotes critical thinking and not pressing the magical " ✨ get work done ✨ " button (which can often lead to longer turnaround time as I may not have thought the problem through very well).
 
 ### Where it's at right now
 
