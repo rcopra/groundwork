@@ -20,39 +20,49 @@ Each skill works standalone in a fresh session. Running them in sequence in the 
 ### Add the marketplace
 
 ```
-/plugin marketplace add rcopra/groundwork
+/plugin marketplace add boundlesshq/groundwork
 ```
 
 ### Install the plugin
 
 ```
-/plugin install groundwork@rcopra-groundwork
+/plugin install groundwork@boundlesshq-groundwork
 ```
 
-### Optional: prompt your team automatically
+## Idea behind groundwork
 
-Add to your project's `.claude/settings.json` to prompt teammates on first open:
+The idea behind this skill suite is that sometimes you want to use Claude as a soundboard rather than a "task do-er".
 
-```json
-{
-  "extraKnownMarketplaces": {
-    "rcopra-groundwork": {
-      "source": {
-        "source": "github",
-        "repo": "rcopra/groundwork"
-      }
-    }
-  },
-  "enabledPlugins": {
-    "groundwork@rcopra-groundwork": true
-  }
-}
-```
+I was hitting a wall where I'd want to do a codebase exploration for a ticket, and Claude would be like "I know what to do here" and write the code or whip up a plan before I was done understanding the problem. I'd let it do its thing, and more often than not, it would 'work' but it wouldn't be the correct approach. Sometimes that's my fault (I didn't fully understand the problem when I originally prompted it) and other times it was just a matter of complexity (and fragile tightly coupled things that I didn't know about).
 
-## Requirements
+### Inspiration
 
-- **ticket-analysis** requires the Jira MCP server connected to Claude Code
-- All other skills work with no extra setup
+I took inspiration from the very cool, very popular [superpowers](https://github.com/NickBaynham/superpowers) skill. Basically, superpowers does a proper brainstorm session with you, and has an interactive session where you decide on implementation, architecture, etc. Then it hands that plan off to a plan writer, and then it orchestrates a group of sub-agents who go work on the feature using TDD.
+
+My favorite part was the brainstorming session -- but I wanted one that was more of a "let's think about this together" rather than one that put a bunch of ideas in my head before I had the chance to actually think the problem through myself.
+
+Also, I can sometimes have a hard time staying focused while working on tickets and wanted to be able to ask exploratory questions, but not go down every rabbit hole I saw when I wanted to know how something was working.
+
+### The flow
+
+1. **ticket-analysis** looks at the Jira ticket together using Atlassian MCP and makes sure A/C is all clear. If not, pause while we get clarification from the team or product.
+
+2. Once all the A/C is agreed upon and no open questions remain, pass off to the **architect** who helps plan the implementation. This session is also interactive because I want to completely understand the approach before we write code. This step sounds the most straightforward but also feels like it needs the most tuning to get right. It's not working as I envision it still, but we'll get there.
+
+3. Finally, the architect writes up a plan for the **pairing-buddy** who will be my rubber-duck that keeps me unblocked while I work on the ticket. I write the code. Pairing-buddy can only give me pseudocode if I'm blocked (ideally... more on that later) -- this lets me stay sharp and do the fun part about programming: writing code. If I'm really stuck I can ask for code snippet examples, but so far I haven't really needed/wanted that yet. Pairing-buddy is also supposed to help me stay focused. I can ask questions about stuff I'm curious about while working, but if I go too far down a rabbit hole, it's supposed to pull me back.
+
+### The point
+
+It's really supposed to be all about not robbing me of my chances to grow as a dev, and letting me think about problems. It's not a productivity multiplier kind of skill, but more one that promotes critical thinking and not pressing the "get work done" button (which can often lead to longer turnaround time as I may not have thought the problem through very well).
+
+### Where it's at right now
+
+Groundwork doesn't meet my vision yet. Some things I'm working through:
+
+- **Pairing-buddy was getting spoiled.** The architect was passing full implementation instructions, and since pairing-buddy's entire existence is the prompt and its context, it just told me solutions (spoiling all my fun). My workaround was to have the architect make 2 plans -- one with instructions to give me, and another with instructions that are more "machine friendly".
+- **No seamless handoffs yet.** The skills don't hand off to one another using hooks, which is just down to me not yet taking the time to learn how to implement hooks into a skill.
+
+I plan on working on the skill suite more soon, but haven't had the time to tinker with it. Since we all started discussing skills lately, figured I'd share where it's at.
 
 ## Skills
 
